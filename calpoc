@@ -1,0 +1,32 @@
+#!/usr/bin/env bash
+
+usage(){
+  echo "$(basename "$0") start_value end_value"
+}
+
+# Check if any flags or values were passed
+if [ "$#" -eq 0 ]; then
+  usage
+  exit
+fi
+
+
+# If the flag for help is passed, display usage
+case "$1" in
+  -h|--help)
+    usage
+    exit
+  ;;
+esac
+
+start_value="$1"
+end_value="$2"
+scale_value="4"
+
+value="$(bc -l <<< "scale=${scale_value}; ${end_value} - ${start_value}")"
+value="$(bc -l <<< "scale=${scale_value}; ${value} / ${start_value}")"
+value="$(bc -l <<< "scale=${scale_value}; ${value} * 100")"
+
+echo "${value}"
+
+
